@@ -1,0 +1,15 @@
+{
+    "files": ["in/n49_e018_1arc_v3.dt2", "in/n49_e019_1arc_v3.dt2"],
+    "map": {
+        "path": "out",
+        "file_name": "wisla",
+        "center_latitude": 49.628117,
+        "center_longtitude": 18.915636,
+        "minimal_terrain_height": 300,
+        "maximal_terrain_height": 900,
+        "tile_size_x": 1000,
+        "tile_size_y": 1000,
+        "tile_resolution": 513,
+        "tiles_around": [1, 2, 1, 1]
+    }
+}
