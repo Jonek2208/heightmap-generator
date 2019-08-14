@@ -1,4 +1,4 @@
-# Heightmap generator for Unity. 
+# Heightmap generator for Unity
 This generator allows you to generate heightmaps of any size you want.
 You can accurately select your central point and parameters of your terrain.
 It generates also the 16-bit RAW file, so you can just import it to Unity instead of converting it in GIMP or PS.
