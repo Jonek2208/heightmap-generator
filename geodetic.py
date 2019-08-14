@@ -3,44 +3,50 @@ import numpy as np
 
 R = 6371009
 
-def geog2ecef(v, units='rad'):
+
+def geog2ecef(point, units='deg'):
     """Geographic coordinates (lat, lon, height) to ECEF"""
     if units == 'deg':
-        phi = np.deg2rad(v[0])
-        lam = np.deg2rad(v[1])
+        phi = np.deg2rad(point[0])
+        lam = np.deg2rad(point[1])
     elif units == 'rad':
-        phi = v[0]
-        lam = v[1]
+        phi = point[0]
+        lam = point[1]
     else:
         raise Exception("Unknown units")
-    h = v[2]
-    z = np.sin(phi)
-    y = np.cos(phi) * np.sin(lam)
-    x = np.cos(phi) * np.cos(lam)
-    return (R + h) * np.array([x, y, z])
+    height = point[2]
+    coords = np.array([np.cos(phi) * np.cos(lam), np.cos(phi) * np.sin(lam), np.sin(phi)])
+    return (R + height) * coords
 
 
-def ecef2geog(v, units='deg'):
+def ecef2geog(point, units='deg'):
     """ECEF to geographic coordinates"""
-    v_norm = np.linalg.norm(v)
-    v /= v_norm
-    h = v_norm - R
-    phi = np.arcsin(v[2])
-    lam = np.arctan2(v[1], v[0])
+    point_norm = np.linalg.norm(point)
+    point /= point_norm
+    height = point_norm - R
+    phi = np.arcsin(point[2])
+    lam = np.arctan2(point[1], point[0])
     if units == 'deg':
         phi, lam = np.rad2deg((phi, lam))
-    return np.array([phi, lam, h])
+    return np.array([phi, lam, height])
 
-def geo_dist(point1, point2, units='rad'):
+
+def geo_dist(point1, point2, units='deg'):
+    """Function returns geographic distance between two points"""
     return np.linalg.norm(geog2ecef(point1, units) - geog2ecef(point2, units))
 
-def rot_mat(phi, lam, units='rad'):
-    """Rotation matrix"""
-    def rot_x(th):
-        return np.array([[1, 0, 0], [0, np.cos(th), -np.sin(th)], [0, np.sin(th), np.cos(th)]])
 
-    def rot_z(th):
-        return np.array([[np.cos(th), -np.sin(th), 0], [np.sin(th), np.cos(th), 0], [0, 0, 1]])
+def rot_mat(phi, lam, units='deg'):
+    """Rotation matrix"""
+    def rot_x(angle):
+        return np.array([[1, 0, 0],
+                         [0, np.cos(angle), -np.sin(angle)],
+                         [0, np.sin(angle), np.cos(angle)]])
+
+    def rot_z(angle):
+        return np.array([[np.cos(angle), -np.sin(angle), 0],
+                         [np.sin(angle), np.cos(angle), 0],
+                         [0, 0, 1]])
 
     if units == 'deg':
         phi, lam = np.deg2rad((phi, lam))
@@ -50,14 +56,14 @@ def rot_mat(phi, lam, units='rad'):
 class LTP:
     """ENU local tangent plane"""
 
-    def __init__(self, cen, units='rad'):
+    def __init__(self, cen, units='deg'):
         self.rot_mat = rot_mat(cen[0], cen[1], units)
         self.cen = geog2ecef(cen, units)
 
-    def from_geog(self, p, units='rad'):
+    def from_geog(self, point, units='deg'):
         """Conversion from geographic coordinates to enu with central point in self.cen"""
-        return self.rot_mat @ (geog2ecef(p, units) - self.cen)
+        return self.rot_mat @ (geog2ecef(point, units) - self.cen)
 
-    def to_geog(self, p, units='deg'):
+    def to_geog(self, point, units='deg'):
         """Conversion to geographic coordinates from enu with central point in self.cen"""
-        return ecef2geog(self.rot_mat.T @ p + self.cen, units)
+        return ecef2geog(self.rot_mat.T @ point + self.cen, units)

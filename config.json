@@ -10,6 +10,6 @@
         "tile_size_x": 1000,
         "tile_size_y": 1000,
         "tile_resolution": 513,
-        "tiles_around": [1, 2, 1, 1]
+        "tiles_around": [1, 1, 1, 1]
     }
 }
