@@ -1,4 +1,4 @@
-# Heightmap generator for Unity
+# Real-world terrain heightmap generator for Unity
 This generator allows you to generate heightmaps of any size you want.
 You can accurately select your central point and parameters of your terrain.
 It generates also the 16-bit RAW file, so you can just import it to Unity instead of converting it in GIMP or PS.
@@ -8,7 +8,7 @@ It generates also the 16-bit RAW file, so you can just import it to Unity instea
 * NumPy - `pip install numpy`
 * SciPy - `pip install scipy`
 * GDAL <https://pypi.org/project/GDAL/>:
-  * Windows - download whl file from <https://www.lfd.uci.edu/~gohlke/pythonlibs/> and then `pip install <file_name>`
+  * Windows - download whl file from <https://www.lfd.uci.edu/~gohlke/pythonlibs/> and then `pip install <path_to_file>`
   * Linux - `sudo easy_install GDAL`
 
 
