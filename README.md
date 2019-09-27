@@ -31,6 +31,7 @@ Open config.json file and set parameters
   * `"tiles_around"` - padding around central tile in tiles `[top, right, bottom, left]` (from top view)
 
 # TODO
+* Generating geographical objects data from OpenStreetMap data
 * Check if it works (and maybe fix) for tricky coordinates
 * Make lightweight standalone package
 * Easier import to Unity
